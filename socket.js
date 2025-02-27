@@ -35,10 +35,12 @@ module.exports.initIO = (httpServer) => {
     socket.on("call", (data) => {
       let calleeId = data.calleeId;
       let rtcMessage = data.rtcMessage;
+      let isVideomode = data.isVideomode;
       console.log(data, "Call");      
       socket.to(calleeId).emit("newCall", {
         callerId: socket.user,
         rtcMessage: rtcMessage,
+        isVideomode: isVideomode
       });
     });
 
