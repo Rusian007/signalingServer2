@@ -28,7 +28,7 @@ let hostname = '127.0.0.1'//'192.168.0.191'; // Define your hostname
 
 initIO(httpServer);
 //httpServer.listen(process.env.PORT || port);
-httpServer.listen(port, hostname, () => {
+httpServer.listen(port, () => {
     console.log(`Server started on http://${hostname}:${port}`);
 });
 
