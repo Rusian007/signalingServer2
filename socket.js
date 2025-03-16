@@ -21,14 +21,13 @@ module.exports.initIO = (httpServer) => {
     socket.emit("allUsers", connectedUsers);
 
     socket.on("disconnect", (reason) => {
-      console.log("User disconnected:", socket.user, "Reason:", reason);
+      console.log("User disconnected:", socket.user, "Reason: ", reason);
       connectedUsers.splice(connectedUsers.indexOf(socket.user), 1);
       socket.emit("allUsers", connectedUsers);
     });
 
     socket.on("refresh", (data) => {
       console.log("refreshing ...");
-      
       socket.emit("allUsers", connectedUsers);
     });
 
@@ -36,28 +35,33 @@ module.exports.initIO = (httpServer) => {
       let calleeId = data.calleeId;
       let rtcMessage = data.rtcMessage;
       let isVideomode = data.isVideomode;
+      let aliasName = data.aliasName || null;
+
       console.log(data, "Call");      
       socket.to(calleeId).emit("newCall", {
         callerId: socket.user,
         rtcMessage: rtcMessage,
-        isVideomode: isVideomode
+        isVideomode: isVideomode,
+        aliasName: aliasName
       });
     });
 
     socket.on("answerCall", (data) => {
       let callerId = data.callerId;
-      rtcMessage = data.rtcMessage;
+      let rtcMessage = data.rtcMessage;
+      let aliasName = data.aliasName || null;
 
       console.log(data, "answerCall" );
       socket.to(callerId).emit("callAnswered", {
         callee: socket.user,
         rtcMessage: rtcMessage,
+        aliasName: aliasName
       });
     });
 
     socket.on("endCall", (data) => {
       let callerId = data.callerId;
-      rtcMessage = data.callEnd;
+      let rtcMessage = data.callEnd;
       console.log(callerId);
       socket.to(callerId).emit("callEnd", {
         callee: socket.user,
@@ -66,7 +70,7 @@ module.exports.initIO = (httpServer) => {
     });
 
     socket.on("ICEcandidate", (data) => {
-      console.log("ICEcandidate data.calleeId", data.calleeId);
+    //  console.log("ICEcandidate data.calleeId", data.calleeId);
       let calleeId = data.calleeId;
       let rtcMessage = data.rtcMessage;
       console.log("socket.user emit from", socket.user);
