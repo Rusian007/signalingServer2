@@ -13,7 +13,7 @@ const sendNotification = async (req, res) => {
       return res.status(400).json({ errors: errors.array() });
     }
   
-    const { token, calleeId, rtcMessage, title, isVideomode , body} = req.body;
+    const { token, calleeId, rtcMessage, title, isVideomode , body, email} = req.body;
   
     const message = {
       notification: {
@@ -24,6 +24,7 @@ const sendNotification = async (req, res) => {
         calleeId: calleeId,
         rtcMessage: rtcMessage,
         isVideomode: isVideomode ? 'true' : 'false',
+        email: email
       },
       // data: Object.fromEntries(
       //   Object.entries(data || {}).map(([key, value]) => [key, String(value)])
@@ -43,7 +44,6 @@ const sendNotification = async (req, res) => {
       console.log('Successfully sent message:', response);
       res.json({ success: true, message: 'Notification sent successfully' });
     } catch (error) {
-  
   
       console.log('Error sending message:', error);
       res.status(500).json({ success: false, error: 'Failed to send notification - ' + error.message});
