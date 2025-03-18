@@ -14,7 +14,7 @@ const sendNotification = async (req, res) => {
       return res.status(400).json({ errors: errors.array() });
     }
   
-    const { token, calleeId, rtcMessage, title, isVideomode , body, email, aliasName} = req.body;
+    const { token, calleeId, callerId,rtcMessage, title, isVideomode , body, email, aliasName} = req.body;
   
     const message = {
       notification: {
@@ -23,6 +23,7 @@ const sendNotification = async (req, res) => {
       },
       data: {
         calleeId: calleeId,
+        callerId: callerId,
         rtcMessage: rtcMessage,
         isVideomode: isVideomode ? 'true' : 'false',
         email: email,
