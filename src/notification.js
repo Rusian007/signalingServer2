@@ -15,7 +15,7 @@ const sendNotification = async (req, res) => {
     }
   
     const { token, calleeId, callerId, rtcMessage, title, isVideomode, body, email, aliasName} = req.body;
-  
+  console.log(token, calleeId, callerId, rtcMessage, title, isVideomode, body, email, aliasName);
     const message = {
       notification: {
         title,
