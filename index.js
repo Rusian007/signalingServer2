@@ -18,7 +18,7 @@ app.post('/send-notification-single', [
     body('token').notEmpty().withMessage('FCM token is required'),
     body('calleeId').notEmpty().withMessage('calleeID required'),
     body('rtcMessage').notEmpty().withMessage('rtcMessage is required'),
-    body('title').notEmpty().withMessage('A Title is required'),
+  //  body('title').notEmpty().withMessage('A Title is required'),
 ], sendNotification);
 
 const httpServer = createServer(app);
