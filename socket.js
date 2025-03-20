@@ -1,5 +1,14 @@
 const { Server } = require("socket.io");
 let IO;
+const admin = require('firebase-admin');
+
+// Initialize Firebase Admin SDK
+//const serviceAccount = require('../firebase/firebase-admin.json');
+const serviceAccount = require('/etc/secrets/firebase-admin.json');
+
+admin.initializeApp({
+  credential: admin.credential.cert(serviceAccount)
+});
 
 module.exports.initIO = (httpServer) => {
   IO = new Server(httpServer);
@@ -33,11 +42,42 @@ module.exports.initIO = (httpServer) => {
 
     socket.on("call", (data) => {
       let calleeId = data.calleeId;
+      let callerId = data.callerId;
       let rtcMessage = data.rtcMessage;
       let isVideomode = data.isVideomode;
       let aliasName = data.aliasName || null;
+      let token = data.token;
 
-      console.log(data, "Call");      
+      //console.log(data, "Call");      
+      if (token) {
+        const message = {
+          notification: {
+            title: null,
+            body: null
+          },
+          data: {
+            calleeId: String(calleeId),
+            callerId: callerId ? String(callerId) : null,
+            //      rtcMessage: String(rtcMessage),
+            //      isVideomode: isVideomode ? 'true' : 'false',
+            //      email: String(email || ""),
+            aliasName: aliasName ? String(aliasName) : null
+          },
+          // data: Object.fromEntries(
+          //   Object.entries(data || {}).map(([key, value]) => [key, String(value)])
+          // ),
+          token: token,
+          android: {
+            priority: 'high',
+            notification: {
+              channelId: 'high-priority'
+            }
+          }
+        };
+
+        admin.messaging().send(message);
+      }
+
       socket.to(calleeId).emit("newCall", {
         callerId: socket.user,
         rtcMessage: rtcMessage,
@@ -51,7 +91,7 @@ module.exports.initIO = (httpServer) => {
       let rtcMessage = data.rtcMessage;
       let aliasName = data.aliasName || null;
 
-      console.log(data, "answerCall" );
+      console.log(data, "answerCall");
       socket.to(callerId).emit("callAnswered", {
         callee: socket.user,
         rtcMessage: rtcMessage,
@@ -70,7 +110,7 @@ module.exports.initIO = (httpServer) => {
     });
 
     socket.on("ICEcandidate", (data) => {
-    //  console.log("ICEcandidate data.calleeId", data.calleeId);
+      //  console.log("ICEcandidate data.calleeId", data.calleeId);
       let calleeId = data.calleeId;
       let rtcMessage = data.rtcMessage;
       console.log("socket.user emit from", socket.user);
