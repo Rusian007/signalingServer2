@@ -48,7 +48,13 @@ module.exports.initIO = (httpServer) => {
       let aliasName = data.aliasName || null;
       let token = data.token;
 
-      //console.log(data, "Call");      
+      socket.to(calleeId).emit("newCall", {
+        callerId: socket.user,
+        rtcMessage: rtcMessage,
+        isVideomode: isVideomode,
+        aliasName: aliasName
+      });
+      
       if (token) {
         const message = {
           notification: {
@@ -78,12 +84,7 @@ module.exports.initIO = (httpServer) => {
         admin.messaging().send(message);
       }
 
-      socket.to(calleeId).emit("newCall", {
-        callerId: socket.user,
-        rtcMessage: rtcMessage,
-        isVideomode: isVideomode,
-        aliasName: aliasName
-      });
+     
     });
 
     socket.on("answerCall", (data) => {
