@@ -168,10 +168,6 @@ module.exports.sendNotification = async (req, res) => {
   }
 };
 
-module.exports = {
-  sendNotification
-}
-
 module.exports.getIO = () => {
   if (!IO) {
     throw Error("IO not initilized.");
