@@ -1,9 +1,9 @@
 const path = require('path');
 const { createServer } = require('http');
-const { sendNotification } = require('./src/notification');
+//const {  } = require('./src/notification');
 const { body } = require('express-validator');
 const express = require('express');
-const { getIO, initIO } = require('./socket');
+const { getIO, initIO, sendNotification } = require('./socket');
 
 const app = express();
 app.use(express.json());
