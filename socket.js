@@ -133,10 +133,10 @@ module.exports.sendNotification = async (req, res) => {
 
   const { token, calleeId, callerId, rtcMessage, title, isVideomode, body, email, aliasName } = req.body;
   const message = {
-    notification: {
-      title,
-      body
-    },
+  //  notification: {
+  //    title,
+  //    body
+  //  },
     data: {
       calleeId: String(calleeId),
       callerId: String(callerId),
