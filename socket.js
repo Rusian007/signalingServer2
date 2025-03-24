@@ -122,7 +122,7 @@ module.exports.initIO = (httpServer) => {
           sender: socket.user,
           rtcMessage: rtcMessage,
         });
-      }, 11555);
+      }, 1000);
     });
 
   });
