@@ -4,7 +4,7 @@ const admin = require('firebase-admin');
 const { validationResult } = require('express-validator');
 
 // Initialize Firebase Admin SDK
-//const serviceAccount = require('../firebase/firebase-admin.json');
+//const serviceAccount = require('./firebase/firebase-admin.json');
 const serviceAccount = require('/etc/secrets/firebase-admin.json');
 
 admin.initializeApp({
@@ -49,12 +49,14 @@ module.exports.initIO = (httpServer) => {
       let aliasName = data.aliasName || null;
       let token = data.token;
 
-      socket.to(calleeId).emit("newCall", {
-        callerId: socket.user,
-        rtcMessage: rtcMessage,
-        isVideomode: isVideomode,
-        aliasName: aliasName
-      });
+      setTimeout(() => {
+        socket.to(calleeId).emit("newCall", {
+          callerId: socket.user,
+          rtcMessage: rtcMessage,
+          isVideomode: isVideomode,
+          aliasName: aliasName
+        });
+      }, 8000);
 
       if (token) {
         const message = {
@@ -81,11 +83,8 @@ module.exports.initIO = (httpServer) => {
             }
           }
         };
-
         admin.messaging().send(message);
       }
-
-     
     });
 
     socket.on("answerCall", (data) => {
@@ -115,13 +114,17 @@ module.exports.initIO = (httpServer) => {
       //  console.log("ICEcandidate data.calleeId", data.calleeId);
       let calleeId = data.calleeId;
       let rtcMessage = data.rtcMessage;
-      console.log("socket.user emit from", socket.user);
-      console.log("socket user emit to", calleeId);
-      socket.to(calleeId).emit("ICEcandidate", {
-        sender: socket.user,
-        rtcMessage: rtcMessage,
-      });
+      console.log("Ice emit from", socket.user);
+      console.log("Ice emit to", calleeId);
+
+      setTimeout(() => {
+        socket.to(calleeId).emit("ICEcandidate", {
+          sender: socket.user,
+          rtcMessage: rtcMessage,
+        });
+      }, 12000);
     });
+
   });
 };
 
@@ -133,10 +136,10 @@ module.exports.sendNotification = async (req, res) => {
 
   const { token, calleeId, callerId, rtcMessage, title, isVideomode, body, email, aliasName } = req.body;
   const message = {
-  //  notification: {
-  //    title,
-  //    body
-  //  },
+    // notification: {
+    //   title,
+    //   body
+    // },
     data: {
       calleeId: String(calleeId),
       callerId: String(callerId),
