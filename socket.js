@@ -49,14 +49,14 @@ module.exports.initIO = (httpServer) => {
       let aliasName = data.aliasName || null;
       let token = data.token;
 
-     
+      setTimeout(() => {
         socket.to(calleeId).emit("newCall", {
           callerId: socket.user,
           rtcMessage: rtcMessage,
           isVideomode: isVideomode,
           aliasName: aliasName
         });
-  
+      }, 8000);
 
       if (token) {
         const message = {
@@ -117,12 +117,12 @@ module.exports.initIO = (httpServer) => {
       console.log("Ice emit from", socket.user);
       console.log("Ice emit to", calleeId);
 
-    
+      setTimeout(() => {
         socket.to(calleeId).emit("ICEcandidate", {
           sender: socket.user,
           rtcMessage: rtcMessage,
         });
-    
+      }, 12000);
     });
 
   });
