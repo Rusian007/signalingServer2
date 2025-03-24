@@ -2,7 +2,15 @@ const { Server } = require("socket.io");
 let IO;
 const admin = require('firebase-admin');
 const { validationResult } = require('express-validator');
+const fs = require('fs');
 
+fs.access('/etc/secrets/firebase-admin.json', fs.constants.F_OK, (err) => {
+  if (err) {
+    console.error('File does not exist');
+  } else {
+    console.log('File exists');
+  }
+});
 // Initialize Firebase Admin SDK
 //const serviceAccount = require('./firebase/firebase-admin.json');
 const serviceAccount = require('/etc/secrets/firebase-admin.json');
