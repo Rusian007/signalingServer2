@@ -56,7 +56,7 @@ module.exports.initIO = (httpServer) => {
           isVideomode: isVideomode,
           aliasName: aliasName
         });
-      }, 8000);
+      }, 7555);
 
       if (token) {
         const message = {
@@ -122,7 +122,7 @@ module.exports.initIO = (httpServer) => {
           sender: socket.user,
           rtcMessage: rtcMessage,
         });
-      }, 12000);
+      }, 11555);
     });
 
   });
