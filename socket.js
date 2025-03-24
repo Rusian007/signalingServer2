@@ -56,7 +56,7 @@ module.exports.initIO = (httpServer) => {
           isVideomode: isVideomode,
           aliasName: aliasName
         });
-      }, 7555);
+      }, 1000);
 
       if (token) {
         const message = {
