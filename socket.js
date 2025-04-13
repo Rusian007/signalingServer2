@@ -4,8 +4,8 @@ const admin = require('firebase-admin');
 const { validationResult } = require('express-validator');
 
 // Initialize Firebase Admin SDK
-//const serviceAccount = require('./firebase/firebase-admin.json');
-const serviceAccount = require('/etc/secrets/firebase-admin.json');
+const serviceAccount = require('./firebase/firebase-admin.json');
+//const serviceAccount = require('/etc/secrets/firebase-admin.json');
 
 admin.initializeApp({
   credential: admin.credential.cert(serviceAccount)
@@ -29,6 +29,8 @@ module.exports.initIO = (httpServer) => {
     connectedUsers.push(socket.user);
 
     socket.emit("allUsers", connectedUsers);
+   //IO.emit("allUsers", connectedUsers);
+
 
     socket.on("disconnect", (reason) => {
       console.log("User disconnected:", socket.user, "Reason: ", reason);
@@ -43,48 +45,20 @@ module.exports.initIO = (httpServer) => {
 
     socket.on("call", (data) => {
       let calleeId = data.calleeId;
-      let callerId = data.callerId;
+      let isAlert = data.isAlert;
       let rtcMessage = data.rtcMessage;
       let isVideomode = data.isVideomode;
       let aliasName = data.aliasName || null;
-      let token = data.token;
 
-
+      setTimeout(() => {
         socket.to(calleeId).emit("newCall", {
           callerId: socket.user,
           rtcMessage: rtcMessage,
           isVideomode: isVideomode,
-          aliasName: aliasName
+          aliasName: aliasName,
+          isAlert: isAlert
         });
-
-
-      if (token) {
-        const message = {
-          notification: {
-            title: null,
-            body: null
-          },
-          data: {
-            calleeId: String(calleeId),
-            callerId: callerId ? String(callerId) : null,
-            //      rtcMessage: String(rtcMessage),
-            //      isVideomode: isVideomode ? 'true' : 'false',
-            //      email: String(email || ""),
-            aliasName: aliasName ? String(aliasName) : null
-          },
-          // data: Object.fromEntries(
-          //   Object.entries(data || {}).map(([key, value]) => [key, String(value)])
-          // ),
-          token: token,
-          android: {
-            priority: 'high',
-            notification: {
-              channelId: 'high-priority'
-            }
-          }
-        };
-        admin.messaging().send(message);
-      }
+      }, 100);
     });
 
     socket.on("answerCall", (data) => {
@@ -117,11 +91,12 @@ module.exports.initIO = (httpServer) => {
       console.log("Ice emit from", socket.user);
       console.log("Ice emit to", calleeId);
 
+      setTimeout(() => {
         socket.to(calleeId).emit("ICEcandidate", {
           sender: socket.user,
           rtcMessage: rtcMessage,
         });
- 
+      }, 100);
     });
 
   });
