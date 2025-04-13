@@ -4,8 +4,8 @@ const admin = require('firebase-admin');
 const { validationResult } = require('express-validator');
 
 // Initialize Firebase Admin SDK
-const serviceAccount = require('./firebase/firebase-admin.json');
-//const serviceAccount = require('/etc/secrets/firebase-admin.json');
+//const serviceAccount = require('./firebase/firebase-admin.json');
+const serviceAccount = require('/etc/secrets/firebase-admin.json');
 
 admin.initializeApp({
   credential: admin.credential.cert(serviceAccount)
