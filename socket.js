@@ -4,8 +4,8 @@ const admin = require('firebase-admin');
 const { validationResult } = require('express-validator');
 
 // Initialize Firebase Admin SDK
-//const serviceAccount = require('./firebase/firebase-admin.json');
-const serviceAccount = require('/etc/secrets/firebase-admin.json');
+const serviceAccount = require('./firebase/firebase-admin.json');
+//const serviceAccount = require('/etc/secrets/firebase-admin.json');
 
 admin.initializeApp({
   credential: admin.credential.cert(serviceAccount)
@@ -104,7 +104,10 @@ module.exports.initIO = (httpServer) => {
 
 module.exports.sendNotification = async (req, res) => {
   const errors = validationResult(req);
-  console.log(errors)
+  if (!errors.isEmpty()) {
+    return res.status(400).json({ errors: errors.array() });
+  }
+
   const { token, calleeId, callerId, title, isVideomode, body, isALert, aliasName } = req.body;
   const message = {
     // notification: {
@@ -114,12 +117,15 @@ module.exports.sendNotification = async (req, res) => {
     data: {
       calleeId: String(calleeId),
       callerId: String(callerId),
+     // rtcMessage: String(rtcMessage),
       isVideomode: isVideomode ? 'true' : 'false',
-      isAlert: isALert,
+      isAlert: String(isALert),
      // email: String(email || ""),
       aliasName: String(aliasName)
     },
-
+    // data: Object.fromEntries(
+    //   Object.entries(data || {}).map(([key, value]) => [key, String(value)])
+    // ),
     token: token,
     android: {
       priority: 'high',
@@ -135,6 +141,7 @@ module.exports.sendNotification = async (req, res) => {
     console.log('Successfully sent message:', response);
     res.json({ success: true, message: 'Notification sent successfully' });
   } catch (error) {
+
     console.log('Error sending message:', error);
     res.status(500).json({ success: false, error: 'Failed to send notification - ' + error.message });
   }
