@@ -104,10 +104,7 @@ module.exports.initIO = (httpServer) => {
 
 module.exports.sendNotification = async (req, res) => {
   const errors = validationResult(req);
-  if (!errors.isEmpty()) {
-    return res.status(400).json({ errors: errors.array() });
-  }
-
+  console.log(errors)
   const { token, calleeId, callerId, title, isVideomode, body, isALert, aliasName } = req.body;
   const message = {
     // notification: {
@@ -117,15 +114,12 @@ module.exports.sendNotification = async (req, res) => {
     data: {
       calleeId: String(calleeId),
       callerId: String(callerId),
-     // rtcMessage: String(rtcMessage),
       isVideomode: isVideomode ? 'true' : 'false',
       isAlert: isALert,
      // email: String(email || ""),
       aliasName: String(aliasName)
     },
-    // data: Object.fromEntries(
-    //   Object.entries(data || {}).map(([key, value]) => [key, String(value)])
-    // ),
+
     token: token,
     android: {
       priority: 'high',
@@ -141,7 +135,6 @@ module.exports.sendNotification = async (req, res) => {
     console.log('Successfully sent message:', response);
     res.json({ success: true, message: 'Notification sent successfully' });
   } catch (error) {
-
     console.log('Error sending message:', error);
     res.status(500).json({ success: false, error: 'Failed to send notification - ' + error.message });
   }
