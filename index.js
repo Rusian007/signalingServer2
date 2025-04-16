@@ -17,7 +17,6 @@ app.get('/', (req, res) => {
 app.post('/send-notification-single', [
     body('token').notEmpty().withMessage('FCM token is required'),
     body('calleeId').notEmpty().withMessage('calleeID required'),
-    body('rtcMessage').notEmpty().withMessage('rtcMessage is required'),
   //  body('title').notEmpty().withMessage('A Title is required'),
 ], sendNotification);
 
