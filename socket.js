@@ -108,7 +108,7 @@ module.exports.sendNotification = async (req, res) => {
     return res.status(400).json({ errors: errors.array() });
   }
 
-  const { token, calleeId, callerId, rtcMessage, title, isVideomode, body, email, aliasName } = req.body;
+  const { token, calleeId, callerId, title, isVideomode, body, isALert, aliasName } = req.body;
   const message = {
     // notification: {
     //   title,
@@ -117,9 +117,10 @@ module.exports.sendNotification = async (req, res) => {
     data: {
       calleeId: String(calleeId),
       callerId: String(callerId),
-      rtcMessage: String(rtcMessage),
+     // rtcMessage: String(rtcMessage),
       isVideomode: isVideomode ? 'true' : 'false',
-      email: String(email || ""),
+      isAlert: isALert,
+     // email: String(email || ""),
       aliasName: String(aliasName)
     },
     // data: Object.fromEntries(
