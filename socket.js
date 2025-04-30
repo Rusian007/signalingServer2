@@ -123,14 +123,13 @@ module.exports.sendNotification = async (req, res) => {
      // email: String(email || ""),
       aliasName: String(aliasName)
     },
-    // data: Object.fromEntries(
-    //   Object.entries(data || {}).map(([key, value]) => [key, String(value)])
-    // ),
+  
     token: token,
     android: {
       priority: 'high',
       notification: {
-        channelId: 'high-priority'
+        channelId: 'high-priority',
+        icon: 'ic_notification'
       }
     }
 
