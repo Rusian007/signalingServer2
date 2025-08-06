@@ -43,6 +43,20 @@ module.exports.initIO = (httpServer) => {
       socket.emit("allUsers", connectedUsers);
     });
 
+    socket.on("initialCall", (data) => {
+      let calleeId = data.calleeId;
+      socket.to(calleeId).emit("newInitialCall", {
+        callerId: socket.user
+      });
+    });
+
+    socket.on("initialCallAnswered", (data) => {
+      let callerId = data.callerId;
+      socket.to(callerId).emit("callAnsweredInitial", {
+        callee: socket.user
+      });
+    });
+
     socket.on("call", (data) => {
       let calleeId = data.calleeId;
       let isAlert = data.isAlert;
