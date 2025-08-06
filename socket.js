@@ -45,8 +45,15 @@ module.exports.initIO = (httpServer) => {
 
     socket.on("initialCall", (data) => {
       let calleeId = data.calleeId;
+      let  audioCall= data.audioCall;
+      let receiverAlias = data.receiverAlias;
+      let  senderAlias = data.senderAlias;
+
       socket.to(calleeId).emit("newInitialCall", {
-        callerId: socket.user
+        callerId: socket.user,
+        audioCall: audioCall,
+        receiverAlias: receiverAlias,
+        senderAlias: senderAlias
       });
     });
 
