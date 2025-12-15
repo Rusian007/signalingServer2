@@ -6,7 +6,7 @@ const appleAPNKey = require(path.join(__dirname, '../firebase/apple_key.json'));
 var options = {
 
     token: {
-      key: path.join(__dirname, '../firebase/AuthKey.p8'),
+      key: null,//path.join(__dirname, '../firebase/AuthKey.p8'),
       keyId: appleAPNKey.keyid,
       teamId: appleAPNKey.teamid
     },
@@ -16,3 +16,4 @@ var options = {
 const apnProvider = new apn.Provider(options);
 
 module.exports = apnProvider;
+
