@@ -3,7 +3,7 @@ let IO = null;
 const admin = require('firebase-admin');
 const { validationResult } = require('express-validator');
 var apn = require('apn');
-const apnProvider = require("./src/apnProvider");
+//const apnProvider = require("./src/apnProvider");
 // Initialize Firebase Admin SDK
 //const serviceAccount = require('./firebase/firebase-admin.json');
 const serviceAccount = require('/etc/secrets/firebase-admin.json');
@@ -262,7 +262,7 @@ module.exports.sendNotification = async (req, res) => {
   }
 };
 
-module.exports.sendNotificationIOS = async (req, res) => {
+/*module.exports.sendNotificationIOS = async (req, res) => {
   const errors = validationResult(req);
   if (!errors.isEmpty()) {
     return res.status(400).json({ errors: errors.array() });
@@ -318,7 +318,7 @@ module.exports.sendNotificationIOS = async (req, res) => {
     console.error("APNs Error", err);
     return res.status(500).json({ success: false, error: err.message });
   }
-}
+}*/
 
 module.exports.sendCallEndSignal = async (req, res) => {
   try {
