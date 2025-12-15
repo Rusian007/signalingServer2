@@ -5,8 +5,8 @@ const { validationResult } = require('express-validator');
 var apn = require('apn');
 const apnProvider = require("./src/apnProvider");
 // Initialize Firebase Admin SDK
-const serviceAccount = require('./firebase/firebase-admin.json');
-//const serviceAccount = require('/etc/secrets/firebase-admin.json');
+//const serviceAccount = require('./firebase/firebase-admin.json');
+const serviceAccount = require('/etc/secrets/firebase-admin.json');
 const { v4: uuidv4 } = require('uuid');
 const connectedUsers = [];
 const activeCalls = new Map();
