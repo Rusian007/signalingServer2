@@ -53,10 +53,10 @@ app.post('/send-notification-single', [
     body('calleeId').notEmpty().withMessage('calleeID required'),
 ], sendNotification);
 
-/*app.post('/send-notification-apn', [
+app.post('/send-notification-apn', [
     body('token').notEmpty().withMessage('APN token is required'),
     body('calleeId').notEmpty().withMessage('calleeID required'),
-], sendNotificationIOS);*/
+], sendNotificationIOS);
 
 app.post('/send-callend-signal', [
     body('callerId').notEmpty().withMessage('callerID required'),
