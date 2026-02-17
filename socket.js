@@ -263,6 +263,7 @@ module.exports.sendNotification = async (req, res) => {
 };
 
 module.exports.sendNotificationIOS = async (req, res) => {
+  console.log("req ", req.body);
   const errors = validationResult(req);
   if (!errors.isEmpty()) {
     return res.status(400).json({ errors: errors.array() });
@@ -274,7 +275,7 @@ module.exports.sendNotificationIOS = async (req, res) => {
     return res.json({ success: true, message: "Skipped as user is busy" });
   }
   const callUuid = uuidv4();
-
+console.log("trying apn");
   const notification = new apn.Notification();
   notification.pushType = "voip";
   notification.topic = "com.incallproject.voip";
