@@ -1,7 +1,8 @@
 // apnProvider.js or at top of your file
 const apn = require('apn');
 const path = require('path');
-const appleAPNKey = require(path.join(__dirname, '../firebase/apple_key.json'));
+//const appleAPNKey = require(path.join(__dirname, '../firebase/apple_key.json'));
+const appleAPNKey = require('/etc/secrets/apple_key.json');
 
 var options = {
 
@@ -16,5 +17,6 @@ var options = {
 const apnProvider = new apn.Provider(options);
 
 module.exports = apnProvider;
+
 
 
