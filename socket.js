@@ -263,19 +263,18 @@ module.exports.sendNotification = async (req, res) => {
 };
 
 module.exports.sendNotificationIOS = async (req, res) => {
-  console.log("req ", req.body);
   const errors = validationResult(req);
   if (!errors.isEmpty()) {
     return res.status(400).json({ errors: errors.array() });
   }
-
+  try {
   const { token, calleeId, callerId, title, isVideomode, body, isALert, aliasName, calling_time } = req.body;
    if (isUserBusy(token)) {
     console.log("Skipping FCM because user busy");
     return res.json({ success: true, message: "Skipped as user is busy" });
   }
   const callUuid = uuidv4();
-console.log("trying apn");
+
   const notification = new apn.Notification();
   notification.pushType = "voip";
   notification.topic = "com.incallproject.voip";
@@ -305,9 +304,9 @@ console.log("trying apn");
     },
   };
 
-  try {
+
     const result = await apnProvider.send(notification, token);
-      console.log("APNs result", result);
+    //   console.log("APNs result", result);
 
     return res.json({
       success: true,
