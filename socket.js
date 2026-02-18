@@ -306,7 +306,7 @@ module.exports.sendNotificationIOS = async (req, res) => {
 
 
     const result = await apnProvider.send(notification, token);
-    //   console.log("APNs result", result);
+       console.log("APNs result", result);
 
     return res.json({
       success: true,
