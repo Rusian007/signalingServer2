@@ -19,6 +19,7 @@ admin.initializeApp({
 });
 
 module.exports.initIO = (httpServer) => {
+  if (IO) return IO;
   IO = new Server(httpServer, {
     pingInterval: 1000,
     pingTimeout: 2000,
