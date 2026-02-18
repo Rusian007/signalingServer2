@@ -11,12 +11,13 @@ var options = {
       keyId: appleAPNKey.keyid,
       teamId: appleAPNKey.teamid
     },
-    production: false
+    production: true
   };
 
 const apnProvider = new apn.Provider(options);
 
 module.exports = apnProvider;
+
 
 
 
